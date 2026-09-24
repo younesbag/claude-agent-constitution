@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دستور الوكيل · إطار ملفات التعليمات لوكلاء Claude</title>
+<meta name="description" content="عشرة مبادئ تجعل ملفات CLAUDE.md وAGENTS.md ترفع أداء وكلاء Claude بدل أن تربكهم، محدّثة لـ Fable 5.1 وOpus 5.5، ومعها نص جاهز يلصقه المستخدم في وكيله ليراجع ملفاته ويحدّثها بأمان.">
+<link rel="canonical" href="{{SITE_URL}}">
+<meta name="theme-color" content="#F4F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0C1217" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:site_name" content="دستور الوكيل">
+<meta property="og:title" content="دستور الوكيل — عشرة مبادئ ونص جاهز لوكيلك">
+<meta property="og:description" content="اجعل ملفات تعليماتك ترفع أداء Fable 5.1 وOpus 5.5 بدل أن تربكهما. مبادئ من توثيق Anthropic ومن دروس مشاريع حقيقية، ونص تلصقه في وكيلك فيراجع ملفاتك بنفسه.">
+<meta property="og:url" content="{{SITE_URL}}">
+<meta property="og:image" content="{{SITE_URL}}assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="دستور الوكيل — عشرة مبادئ ونص جاهز لوكيلك، محدّث لـ Fable 5.1 وOpus 5.5">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="دستور الوكيل — عشرة مبادئ ونص جاهز لوكيلك">
+<meta name="twitter:description" content="اجعل ملفات تعليماتك ترفع أداء Fable 5.1 وOpus 5.5 بدل أن تربكهما.">
+<meta name="twitter:image" content="{{SITE_URL}}assets/og.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"TechArticle","headline":"دستور الوكيل","alternativeHeadline":"Agent Constitution — a framework for Claude agent instruction files","inLanguage":"ar","about":["CLAUDE.md","AGENTS.md","Claude Code","Claude Fable 5.1","Claude Opus 5.5"],"datePublished":"{{DATE}}","dateModified":"{{DATE}}","version":"{{VERSION}}","license":"https://creativecommons.org/licenses/by/4.0/","url":"{{SITE_URL}}","image":"{{SITE_URL}}assets/og.png","author":{"@type":"Person","name":"younesbag","url":"https://github.com/younesbag"},"isAccessibleForFree":true}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F4F5F2; --paper:#FFFFFF; --ink:#17202B; --muted:#4F5A65; --line:#D6DBD7;
+  --accent:#0B6E5B; --accent-ink:#095A4A; --accent-soft:#E1F0EB;
+  --mark:#8A5A0F; --mark-soft:#F6ECD9;
+  --code-bg:#0F171F; --code-ink:#DCE5EC; --code-line:#23313D; --code-muted:#9FB0BE;
+  --focus:#0B6E5B;
+  --display:"Amiri","Noto Naskh Arabic","Traditional Arabic",serif;
+  --body:"IBM Plex Sans Arabic","Segoe UI","Noto Sans Arabic",Tahoma,system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ground:#0C1217; --paper:#131B22; --ink:#E3E9EE; --muted:#A3AFBA; --line:#26323C;
+    --accent:#43C6A7; --accent-ink:#6FD8BE; --accent-soft:#0F2E28;
+    --mark:#E6B35C; --mark-soft:#2C2313;
+    --code-bg:#080D12; --code-ink:#D6E0E9; --code-line:#1C2833; --code-muted:#93A4B3;
+    --focus:#6FD8BE; color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:17.5px;line-height:1.9;padding-inline:16px;padding-block:0 72px}
+a{color:var(--accent-ink)}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.skip{position:absolute;inset-inline-start:16px;top:-60px;background:var(--ink);color:var(--ground);padding:8px 14px;border-radius:6px;z-index:10;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:760px;margin-inline:auto}
+/* header */
+header{padding-block:56px 32px;border-bottom:1px solid var(--line)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted)}
+.meta span+span::before{content:"·";margin-inline-end:14px;color:var(--line)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(46px,9vw,76px);line-height:1.2;margin:14px 0 12px;letter-spacing:0;text-wrap:balance}
+.lede{font-size:20px;line-height:1.8;color:var(--muted);margin:0;max-width:60ch;text-wrap:pretty}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 15.5px var(--body);padding:10px 18px;border-radius:8px;text-decoration:none;border:1px solid var(--line);color:var(--ink);background:var(--paper);min-height:44px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){.btn.primary{color:#062019}}
+.btn svg{width:18px;height:18px;flex:none}
+nav.toc{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:15px}
+nav.toc a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:2px}
+nav.toc a:hover{color:var(--ink);border-color:var(--ink)}
+/* sections */
+section{scroll-margin-top:24px}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(30px,5vw,38px);line-height:1.3;margin:64px 0 6px;text-wrap:balance}
+.sub{color:var(--muted);margin:0 0 26px;max-width:62ch}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;border-radius:999px;padding:1px 10px;margin-inline-start:6px;vertical-align:.15em;white-space:nowrap}
+.tag.doc{background:var(--accent-soft);color:var(--accent-ink)}
+.tag.exp{background:var(--mark-soft);color:var(--mark)}
+code{font-family:var(--mono);font-size:.84em;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:0 5px;direction:ltr;unicode-bidi:isolate;white-space:nowrap}
+/* articles */
+ol.articles{list-style:none;margin:0;padding:0;counter-reset:a}
+ol.articles>li{counter-increment:a;display:grid;grid-template-columns:5.2rem 1fr;column-gap:20px;padding-block:26px;border-top:1px solid var(--line)}
+ol.articles>li:last-child{border-bottom:1px solid var(--line)}
+.num{font-family:var(--display);color:var(--accent);line-height:1.1;padding-top:4px}
+.num small{display:block;font-family:var(--body);font-size:12.5px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.num b{font-size:40px;font-weight:700}
+.num b::before{content:counter(a,arabic-indic)}
+.art h3{font-family:var(--body);font-weight:600;font-size:20.5px;line-height:1.6;margin:0 0 6px}
+.art p{margin:0 0 8px;text-wrap:pretty}
+.why{color:var(--muted);font-size:16px}
+.why strong{color:var(--ink);font-weight:600}
+/* effort */
+.scale{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:24px 22px 20px}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;direction:ltr;margin:0;padding:0;list-style:none}
+.step{text-align:center}
+.pin{font-size:12.5px;color:var(--mark);font-weight:600;min-height:22px;direction:rtl;line-height:1.4}
+.bar{height:12px;border-radius:3px;background:color-mix(in oklab,var(--accent) var(--w),var(--line))}
+.w1{--w:25%}.w2{--w:45%}.w3{--w:65%}.w4{--w:82%}.w5{--w:100%}
+.lv{font-family:var(--mono);font-size:14px;margin-top:8px;font-weight:500}
+.scale p{margin:18px 0 0;font-size:16px;color:var(--muted)}
+.scale p strong{color:var(--ink)}
+.tbl{overflow-x:auto;margin-top:20px}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{text-align:start;padding:11px 8px;border-top:1px solid var(--line);vertical-align:top}
+th{font-weight:600;white-space:nowrap;font-family:var(--mono);font-size:14.5px;direction:ltr;text-align:right}
+/* prompt */
+.prompt-box{background:var(--code-bg);border-radius:12px;overflow:hidden;margin-top:6px;border:1px solid var(--code-line)}
+.bar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-bottom:1px solid var(--code-line);flex-wrap:wrap}
+[role=tablist]{display:flex;gap:4px}
+[role=tab],.copy{font:500 14.5px var(--body);border:1px solid #33424F;background:transparent;color:var(--code-muted);border-radius:7px;padding:6px 14px;cursor:pointer;min-height:40px}
+[role=tab][aria-selected=true]{background:#1E2C39;color:#fff;border-color:#4A5D6E}
+.copy{background:#43C6A7;border-color:#43C6A7;color:#062019;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+.copy svg{width:16px;height:16px}
+.copy:focus-visible,[role=tab]:focus-visible{outline:3px solid #fff;outline-offset:2px}
+pre.prompt{margin:0;padding:20px 20px 24px;max-height:600px;overflow:auto;color:var(--code-ink);font-family:var(--mono);font-size:13.5px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+pre.prompt[dir=rtl]{font-family:var(--body);font-size:15px;line-height:1.95}
+pre.prompt:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.raw{margin:10px 2px 0;font-size:14.5px;color:var(--muted)}
+ol.use{margin:22px 0 0;padding-inline-start:1.4em}
+ol.use li{margin-bottom:8px;padding-inline-start:4px}
+ol.use li::marker{font-family:var(--display);color:var(--accent);font-weight:700}
+/* extras */
+.extras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 32px}
+.extra{border-top:2px solid var(--ink);padding-top:12px}
+.extra h3{font-size:17.5px;font-weight:600;margin:0 0 4px}
+.extra p{margin:0;color:var(--muted);font-size:16px}
+ul.sources{padding-inline-start:1.2em;margin:0;font-size:15.5px}
+ul.sources li{margin-bottom:6px}
+ul.sources a{direction:ltr;unicode-bidi:isolate}
+footer{margin-top:64px;padding-top:22px;border-top:1px solid var(--line);font-size:14.5px;color:var(--muted);display:grid;gap:8px}
+footer p{margin:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width:560px){
+  body{font-size:16.5px}
+  header{padding-block:40px 26px}
+  .lede{font-size:18px}
+  ol.articles>li{grid-template-columns:1fr;row-gap:4px}
+  .num{display:flex;align-items:baseline;gap:8px}
+  .num small{margin:0}
+  .num b{font-size:30px}
+  .lv{font-size:12px}
+  .pin{font-size:11px}
+  pre.prompt{padding:16px}
+  .actions .btn{flex:1 1 100%;justify-content:center}
+  .extras{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+@media print{.actions,nav.toc,.bar-top,.skip{display:none}pre.prompt{max-height:none;color:#000;background:#fff}.prompt-box{background:#fff}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">تخطَّ إلى المحتوى</a>
+<div class="wrap">
+<header>
+  <div class="meta"><span>إطار مفتوح</span><span>الإصدار {{VERSION_AR}}</span><span>محدَّث لـ Fable 5.1 وOpus 5.5</span></div>
+  <h1>دستور الوكيل</h1>
+  <p class="lede">عشرة مبادئ تجعل ملفات التعليمات ترفع أداء وكيلك بدل أن تربكه، ونصٌّ جاهز تلصقه في وكيلك فيراجع ملفاتك ويحدّثها بنفسه، بأمان.</p>
+  <div class="actions">
+    <a class="btn primary" href="#prompt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>النص الجاهز</a>
+    <a class="btn" href="{{REPO_URL}}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>المستودع على GitHub</a>
+    <a class="btn" href="https://x.com/intent/post?text=%D8%AF%D8%B3%D8%AA%D9%88%D8%B1%20%D8%A7%D9%84%D9%88%D9%83%D9%8A%D9%84%20%E2%80%94%20%D8%B9%D8%B4%D8%B1%D8%A9%20%D9%85%D8%A8%D8%A7%D8%AF%D8%A6%20%D9%84%D9%85%D9%84%D9%81%D8%A7%D8%AA%20CLAUDE.md%20%D9%88%D9%86%D8%B5%20%D8%AC%D8%A7%D9%87%D8%B2%20%D9%84%D9%88%D9%83%D9%8A%D9%84%D9%83&amp;url={{SITE_URL_ENC}}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23 22h-6.1l-4.8-6.3L6.6 22H3.5l7.3-8.3L1 2h6.2l4.4 5.8L18.9 2Zm-1.1 18.2h1.7L6.3 3.7H4.5l13.3 16.5Z"/></svg>شارك على X</a>
+  </div>
+  <nav class="toc" aria-label="أقسام الصفحة">
+    <a href="#articles">المواد العشر</a><a href="#effort">مستوى الجهد</a><a href="#prompt">النص الجاهز</a><a href="#extras">إضافات</a><a href="#sources">المصادر</a>
+  </nav>
+</header>
+
+<main id="main">
+<section id="articles" aria-labelledby="h-articles">
+  <h2 id="h-articles">المواد العشر</h2>
+  <p class="sub">الوسم <span class="tag doc">توثيق</span> يعني أن المبدأ منصوص عليه في توثيق Anthropic الرسمي، والوسم <span class="tag exp">تجربة</span> يعني أنه درس تكرر في مشاريع حقيقية.</p>
+  <ol class="articles">
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>اكتب دليل تشغيل، لا موسوعة <span class="tag doc">توثيق</span></h3>
+      <p>اكتب الملف لنموذج يدخل مشروعك لأول مرة: أوامر البناء والاختبار، القرارات المعمارية، والفخاخ غير البديهية. احذف ما يعرفه من قراءة الكود، وما هو بديهي مثل «اكتب كوداً نظيفاً». واسأل عن كل سطر: هل سيخطئ الوكيل لو حذفته؟</p>
+      <p class="why"><strong>لماذا:</strong> التوثيق يوصي بأقل من ٢٠٠ سطر للملف الواحد، لأن الملف الطويل يُضيع القواعد المهمة. المعرفة الخاصة بمجلد معيّن مكانها <code>.claude/rules/</code>، لكنها لا تُحمَّل إلا حين تُفتح ملفات ذلك المجلد. فما يلزم في عمل لا يلمس ملفاً، كأمر SQL مباشر أو رسالة أو فحص موقع حي، يبقى في الملف الرئيسي. والإجراء الطويل المتكرر مكانه مهارة (skill) تُحمَّل عند الحاجة.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>مع كل قاعدة كلمة «لأن» <span class="tag doc">توثيق</span></h3>
+      <p>بدل «لا تستخدم X» اكتب «لا تستخدم X لأنه يسبب Y». جملة سبب واحدة تكفي.</p>
+      <p class="why"><strong>لماذا:</strong> النماذج الحديثة تعمّم من السبب، فتطبّق القاعدة في حالات لم تذكرها. والقاعدة بلا سبب تُطبَّق حرفياً في غير موضعها، أو تُتجاهل حين يبدو الموقف مختلفاً.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>تكلّم بصوت عادي <span class="tag doc">توثيق</span></h3>
+      <p>احذف <code>CRITICAL</code> و<code>MUST</code> بالأحرف الكبيرة، وعبارة «لا تكن كسولاً». واكتب المتطلبات الحقيقية بصيغة أمر صريحة، بدل «حاول» و«إن أمكن».</p>
+      <p class="why"><strong>لماذا:</strong> هذا الصراخ كُتب لنماذج قديمة كانت تتكاسل. أما Fable 5.1 وOpus 5.5 فيتبعان التعليمات بدقة، فيدفعهما الصراخ إلى الإفراط والتصلب. وكلمة «حاول» تُقرأ عندهما إذناً بالتقصير.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>أعطه الهدف والقيود، لا الخطوات <span class="tag doc">توثيق</span></h3>
+      <p>احذف «فكّر خطوة بخطوة» و«خطّط قبل أن تنفّذ» والخطوات المرقّمة للأعمال التي تحتاج حكماً. واكتب بدلها ثلاثة أشياء: ما النتيجة المطلوبة، وما الممنوع، وكيف نعرف أن العمل نجح.</p>
+      <p class="why"><strong>لماذا:</strong> التفكير في النماذج الجديدة يعمل دائماً، وعمقه يُضبط بمستوى الجهد (effort) لا بالنص. والتوثيق يذكر أن التعليمات المفصّلة المكتوبة للنماذج القديمة تُضعف جودة المخرجات. استثناء واحد: العمليات الهشة، كالحذف والهجرة والنشر، تبقى خطواتها حرفية.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>لا أرقام من الذاكرة <span class="tag exp">تجربة</span></h3>
+      <p>كل معلومة تتغير، كعدد العناصر والأسعار وأسماء الأعمدة والإصدارات، تُكتب في جدول «مصدر الحقيقة»: نوع المعلومة ← الأمر أو الملف الذي يحسبها في لحظتها. وعلّم أي مرجع قديم منجرف بعبارة «مرجع قديم — لا يُصدَّق».</p>
+      <p class="why"><strong>لماذا:</strong> الرقم المكتوب في ملف التعليمات يتقادم بصمت، فيكرره الوكيل بثقة كاملة. وأخطر الأخطاء ما بدا صحيحاً.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>«تم» تحتاج دليلاً <span class="tag doc">توثيق</span><span class="tag exp">تجربة</span></h3>
+      <p>أعطه طريقة يتحقق بها من عمله: اختبار، أو بناء، أو فحص أنواع، أو لقطة شاشة. واطلب منه أن يطابق كل ادعاء بنتيجة أداة من الجلسة نفسها، وأن يصرّح بما لم يتحقق منه.</p>
+      <p class="why"><strong>لماذا:</strong> هذا أكثر ما يؤكد عليه توثيق Claude Code. وفي التجربة، ما يُعلَن منجزاً بلا فحص حي هو أكثر ما يعود عطلاً في الإنتاج. وفي الأعمال الحساسة كالدفع والمصادقة، المراجع المستقل بسياق نظيف أدق من النقد الذاتي.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>كل خطأ دفعت ثمنه يصير سطراً <span class="tag exp">تجربة</span></h3>
+      <p>خصّص قسم «أخطاء مسمّاة» بصيغة ثابتة: <strong>الخطأ</strong> (ما سيفعله وكيل هنا) ← <strong>السبب</strong> (الآلية في جملة) ← <strong>القاعدة</strong>. وأضف السطر في نفس التغيير الذي أصلح الخطأ.</p>
+      <p class="why"><strong>لماذا:</strong> هكذا لا تدفع ثمن الدرس مرتين. انتبه لأمرين. الأول: لا تكتب قاعدة من تعثّر حدث مرة واحدة إلا إن كان مكلفاً. والثاني: إن وجدت قاعدة خاطئة فأصلحها في مصدرها، ولا تضف قاعدة أخرى تحذّر منها، وإلا تراكمت التعليمات المتناقضة.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>حدّد متى يسأل، بالضبط <span class="tag exp">تجربة</span><span class="tag doc">توثيق</span></h3>
+      <p>اكتب قائمة مغلقة بالحالات التي يتوقف فيها ويسألك: حذف لا رجعة فيه، دفع وفوترة، رسائل لمستخدمين حقيقيين، بيانات إنتاج، أسرار ومصادقة. وكل ما يُجاب من الكود أو البيانات يقرره بنفسه ويوثّقه. ويكون سؤاله واحداً: سطر سياق، ثم الخيارات وتكلفة كل منها، ثم توصيته.</p>
+      <p class="why"><strong>لماذا:</strong> عبارة «اسأل عند الشك» تنتج إما سيلاً من الأسئلة أو جرأة في غير مكانها. ومن التوثيق قاعدة مصاحبة: حين تصف له مشكلة أو تسأله، فالمطلوب تقييمه لا إصلاحه، حتى تطلب الإصلاح. وحين تطلب منه أن يكمل عمله دون استئذان، استثنِ صراحةً ما في هذه القائمة.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>ذاكرة ذرّية تُراجَع <span class="tag doc">توثيق</span><span class="tag exp">تجربة</span></h3>
+      <p>درس واحد في كل ملف، وفي أوله سطر يلخّصه، وفهرس بسطر واحد لكل ملف. سجّل التصحيحات والأساليب التي نجحت، ومع كل منها السبب. حدّث الملف القائم بدل أن تكرره، واحذف ما ثبت خطؤه، ولا تحفظ ما يسجله الكود أو git أصلاً.</p>
+      <p class="why"><strong>لماذا:</strong> التوثيق يذكر أن Fable 5.1 يتحسن أداؤه بوضوح حين يملك مكاناً يدوّن فيه ما تعلّمه. لكن الذاكرة لقطة من الماضي: أي معلومة فيها تُتحقق من الكود قبل الاعتماد عليها، وتُصحَّح من مصدرها لا من ذاكرة أخرى.</p>
+    </div></li>
+    <li><div class="num" aria-hidden="true"><small>المادة</small><b></b></div><div class="art">
+      <h3>النموذج المناسب، والجهد المناسب <span class="tag doc">توثيق</span><span class="tag exp">تجربة</span></h3>
+      <p>اختر النموذج حسب صعوبة المهمة لا حجمها. تعديل ميكانيكي على مئة ملف يناسبه نموذج أرخص، وخلل من عشرين سطراً في التزامن قد يحتاج أقواها. وما يجب أن يحدث دائماً بلا استثناء لا تكتبه تعليمات: اجعله hook.</p>
+      <p class="why"><strong>لماذا:</strong> ملف التعليمات سياق يُستأنس به لا إلزام، أما الـ hook فيُنفَّذ في كل مرة. وتفاصيل الجهد والنماذج في القسم التالي.</p>
+    </div></li>
+  </ol>
+</section>
+
+<section id="effort" aria-labelledby="h-effort">
+  <h2 id="h-effort">مستوى الجهد: الإعداد الذي يُنسى</h2>
+  <p class="sub">في النماذج الجديدة يُضبط عمق التفكير بإعداد اسمه <code>effort</code>، لا بعبارة في البرومبت.</p>
+  <div class="scale">
+    <p class="sr-only">مستويات الجهد من الأدنى إلى الأعلى:</p>
+    <ol class="steps">
+      <li class="step"><div class="pin"></div><div class="bar w1"></div><div class="lv">low</div></li>
+      <li class="step"><div class="pin">افتراضي Opus 5.5</div><div class="bar w2"></div><div class="lv">medium</div></li>
+      <li class="step"><div class="pin">افتراضي Fable 5.1</div><div class="bar w3"></div><div class="lv">high</div></li>
+      <li class="step"><div class="pin"></div><div class="bar w4"></div><div class="lv">xhigh</div></li>
+      <li class="step"><div class="pin"></div><div class="bar w5"></div><div class="lv">max</div></li>
+    </ol>
+    <p>الافتراضي في Opus 5.5 صار <strong>medium</strong>، أي أقل بدرجة من Opus 5. فإن نقلت إعداداتك القديمة كما هي، سيعمل بجهد أقل مما تظن، فاضبطه صراحة. أما Fable 5.1 فابدأ فيه بـ high، وجرّب medium وlow للأعمال الروتينية، فكثيراً ما تتفوق على المستويات العالية في النماذج السابقة. وقبل أن تكتب «فكّر أقل» أو «فكّر أكثر»، غيّر الجهد.</p>
+    <div class="tbl"><table>
+      <caption class="sr-only">أي نموذج لأي عمل</caption>
+      <tbody>
+      <tr><th scope="row">Sonnet 5</th><td>العمل الواضح المحدود الذي يمكن التحقق منه: تعديلات ميكانيكية، اختبارات، توثيق، بحث في المستودع.</td></tr>
+      <tr><th scope="row">Opus 5.5</th><td>التنفيذ الصعب: تتبّع الأعطال المعقدة، التغييرات العابرة لعدة طبقات، الحالة والتزامن.</td></tr>
+      <tr><th scope="row">Fable 5.1</th><td>المعمارية، والغموض، والأمن والمصادقة والفوترة، والهجرات الهادمة، والمهام الطويلة المستقلة، وكل ما يكون ثمن الخطأ فيه عالياً.</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section id="prompt" aria-labelledby="h-prompt">
+  <h2 id="h-prompt">النص الجاهز: الصقه في وكيلك</h2>
+  <p class="sub">يراجع ملفات تعليماتك وفق هذه المبادئ، ويعرض عليك تقريراً وتعديلات مقترحة، ولا يغيّر شيئاً قبل موافقتك. وحين توافق، يأخذ نسخة احتياطية من كل ملف، وينقل المحتوى حرفياً، ثم يتحقق آلياً من أن شيئاً لم يضِع.</p>
+  <div class="prompt-box">
+    <div class="bar-top">
+      <div role="tablist" aria-label="لغة النص">
+        <button type="button" id="tab-ar" role="tab" aria-selected="true" aria-controls="p-ar" tabindex="0">العربية</button>
+        <button type="button" id="tab-en" role="tab" aria-selected="false" aria-controls="p-en" tabindex="-1">English</button>
+      </div>
+      <button type="button" class="copy" id="copy-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span id="copy-label">انسخ النص</span></button>
+    </div>
+<pre class="prompt" id="p-ar" dir="rtl" lang="ar" role="tabpanel" aria-labelledby="tab-ar" tabindex="0">{{PROMPT_AR}}</pre>
+<pre class="prompt" id="p-en" dir="ltr" lang="en" role="tabpanel" aria-labelledby="tab-en" tabindex="0" hidden>{{PROMPT_EN}}</pre>
+  </div>
+  <p class="raw">النص نفسه كملف: <a href="{{REPO_URL}}/blob/main/prompt/ar.md">العربية</a> · <a href="{{REPO_URL}}/blob/main/prompt/en.md" lang="en">English</a></p>
+  <p class="sr-only" aria-live="polite" id="copy-status"></p>
+  <ol class="use">
+    <li>افتح وكيلك (Claude Code أو غيره) داخل مجلد مشروعك، والصق النص كاملاً.</li>
+    <li>راجع التقرير والتعديلات المقترحة، واقبل ما تقتنع به وارفض الباقي. أنت صاحب القرار.</li>
+    <li>كرّر المراجعة عند كل إصدار نموذج جديد، لأن التعليمات المكتوبة لنموذج قديم تصبح عبئاً على الجديد.</li>
+  </ol>
+</section>
+
+<section id="extras" aria-labelledby="h-extras">
+  <h2 id="h-extras">أربع إضافات سريعة</h2>
+  <div class="extras">
+    <div class="extra"><h3>ابدأ من جديد</h3><p>إن صحّحته مرتين في المسألة نفسها ولم ينجح، افتح جلسة جديدة (<code>/clear</code>) ببرومبت أوضح. الجلسة النظيفة تتفوق على جلسة مثقلة بالتصحيحات.</p></div>
+    <div class="extra"><h3>المهام الطويلة</h3><p>قل له صراحة إنك لا تتابعه لحظياً، وإن الأسئلة من نوع «هل أكمل؟» ستوقف العمل، مع استثناء حالات التصعيد. فينجز حتى النهاية بدل أن يتوقف في منتصفها.</p></div>
+    <div class="extra"><h3>الواجهات</h3><p>مع Opus 5.5، عبارة «تجنّب الشكل العام» لا تكفي. سمِّ الأنماط التي لا تريدها بالاسم: لون الخلفية، شكل الأزرار، ترقيم الأقسام.</p></div>
+    <div class="extra"><h3>أعطه السبب</h3><p>«أعمل على كذا لصالح فلان، ويحتاجه ليفعل كذا» قبل الطلب نفسه. النماذج الأحدث تربط المهمة بما يهم حين تفهم الغاية.</p></div>
+  </div>
+</section>
+
+<section id="sources" aria-labelledby="h-sources">
+  <h2 id="h-sources">المصادر</h2>
+  <p class="sub">توثيق Anthropic الرسمي، وآخر تحقق من الروابط في {{DATE_AR}}.</p>
+  <ul class="sources" lang="en">
+    <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-fable-5-1">Prompting Claude Fable 5.1</a></li>
+    <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5">Prompting Claude Opus 5.5</a></li>
+    <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">Prompting best practices</a></li>
+    <li><a href="https://platform.claude.com/docs/en/build-with-claude/effort">Effort</a></li>
+    <li><a href="https://code.claude.com/docs/en/best-practices">Claude Code: Best practices</a></li>
+    <li><a href="https://code.claude.com/docs/en/memory">Claude Code: Memory</a></li>
+  </ul>
+</section>
+</main>
+
+<footer>
+  <p><strong>إطار مجتمعي غير رسمي</strong>، ولا ارتباط له بشركة Anthropic. Claude وFable وOpus وSonnet علامات تجارية لـ Anthropic.</p>
+  <p>المحتوى مرخّص بـ <a href="https://creativecommons.org/licenses/by/4.0/deed.ar">CC BY 4.0</a>: انسخه وعدّله وشاركه مع ذكر المصدر. الإصدار {{VERSION_AR}} · <a href="{{REPO_URL}}">المستودع</a> · <a href="{{REPO_URL}}/issues">اقترح تحسيناً</a></p>
+</footer>
+</div>
+
+<script>
+(function () {
+  var tabs = [document.getElementById("tab-ar"), document.getElementById("tab-en")];
+  var panels = { "tab-ar": document.getElementById("p-ar"), "tab-en": document.getElementById("p-en") };
+  var labels = { "tab-ar": ["انسخ النص", "نُسخ ✓", "حدِّد النص وانسخه يدوياً"], "tab-en": ["Copy prompt", "Copied ✓", "Select and copy manually"] };
+  var btn = document.getElementById("copy-btn"), lbl = document.getElementById("copy-label"), status = document.getElementById("copy-status");
+  var active = "tab-ar", timer;
+  function select(id, focus) {
+    active = id;
+    tabs.forEach(function (t) {
+      var on = t.id === id;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      t.tabIndex = on ? 0 : -1;
+      panels[t.id].hidden = !on;
+    });
+    lbl.textContent = labels[id][0];
+    if (focus) document.getElementById(id).focus();
+    try { localStorage.setItem("prompt-lang", id); } catch (e) {}
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { select(t.id, false); });
+    t.addEventListener("keydown", function (e) {
+      if (["ArrowLeft", "ArrowRight", "Home", "End"].indexOf(e.key) === -1) return;
+      e.preventDefault();
+      var next = e.key === "Home" ? "tab-ar" : e.key === "End" ? "tab-en" : (active === "tab-ar" ? "tab-en" : "tab-ar");
+      select(next, true);
+    });
+  });
+  try { var saved = localStorage.getItem("prompt-lang"); if (saved && panels[saved]) select(saved, false); } catch (e) {}
+  function selectText(el) { var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+  function say(i) { lbl.textContent = labels[active][i]; status.textContent = labels[active][i]; clearTimeout(timer); timer = setTimeout(function () { lbl.textContent = labels[active][0]; }, 2000); }
+  btn.addEventListener("click", function () {
+    var el = panels[active], text = el.textContent;
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { say(1); }, function () { selectText(el); say(2); });
+    } else { selectText(el); say(2); }
+  });
+})();
+</script>
+</body>
+</html>
