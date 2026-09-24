@@ -4,7 +4,7 @@
 
 **عشرة مبادئ تجعل ملفات التعليمات (`CLAUDE.md` و`AGENTS.md` وقواعد `.claude/rules`) ترفع أداء وكلاء Claude بدل أن تربكهم، ونصٌّ جاهز تلصقه في وكيلك فيراجع ملفاتك ويحدّثها بنفسه، بأمان.** محدَّث لـ Claude Fable 5.1 وOpus 5.5.
 
-**← الصفحة: [younesbag.github.io/claude-agent-constitution](https://younesbag.github.io/claude-agent-constitution/)**
+**← الصفحة: [younesbag.github.io/claude-agent-constitution](https://younesbag.github.io/claude-agent-constitution/)** · إعداد [@younesbag1](https://x.com/younesbag1)
 
 ## الاستخدام في دقيقة
 1. افتح وكيلك (Claude Code أو غيره) داخل مجلد مشروعك.
@@ -36,6 +36,7 @@
 
 **Ten principles that make your instruction files (`CLAUDE.md`, `AGENTS.md`, `.claude/rules`) improve Claude agents instead of confusing them, plus a ready-made prompt you paste into your agent so it audits and updates those files itself, safely.** Updated for Claude Fable 5.1 and Opus 5.5.
 
+- **By:** [@younesbag1](https://x.com/younesbag1) on X
 - **Page (Arabic):** https://younesbag.github.io/claude-agent-constitution/
 - **Prompt (English):** [prompt/en.md](prompt/en.md). Paste it into Claude Code inside your project. It inventories your instruction files, audits them against the principles, and proposes changes. **It changes nothing until you approve.** When you approve, it backs up each file, moves content verbatim, and checks with a script that nothing was lost.
 
