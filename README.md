@@ -25,6 +25,8 @@
 
 التفاصيل والأسباب في [الصفحة](https://younesbag.github.io/claude-agent-constitution/).
 
+**التطبيق على مشروع حقيقي:** [خل Claude Code يلتزم بقواعدك بدل ما يتجاهلها](https://moshid.com/blog/claude-code-instructions-constitution)، المقال الكامل على مُشَيِّد بنص التدقيق وأمثلة نقل القواعد والتحقق من الالتزام.
+
 ## المصادر
 مبني على توثيق Anthropic الرسمي (توجيه Fable 5.1 وOpus 5.5، وإعداد الجهد، وأفضل ممارسات Claude Code ونظام ذاكرته)، وعلى دروس تكررت في تطبيقه على مشاريع حقيقية. الروابط في الصفحة، وآخر تحقق منها في ٢٤ سبتمبر ٢٠٢٦.
 
@@ -38,6 +40,7 @@
 
 - **By:** [@younesbag1](https://x.com/younesbag1) on X
 - **Page (Arabic):** https://younesbag.github.io/claude-agent-constitution/
+- **Worked example (Arabic):** [خل Claude Code يلتزم بقواعدك بدل ما يتجاهلها](https://moshid.com/blog/claude-code-instructions-constitution), the full article applying these principles to a real project's instruction files.
 - **Prompt (English):** [prompt/en.md](prompt/en.md). Paste it into Claude Code inside your project. It inventories your instruction files, audits them against the principles, and proposes changes. **It changes nothing until you approve.** When you approve, it backs up each file, moves content verbatim, and checks with a script that nothing was lost.
 
 ## Repository layout
